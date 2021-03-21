@@ -1,5 +1,7 @@
-const HDWalletProvider = require('@truffle/hdwallet-provider')
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 require('dotenv').config();
+// require('babel-polyfill');
+// require('babel-register');
 
 const mnemonic = process.env.MNEMONIC
 const url = process.env.RPC_URL
@@ -28,12 +30,13 @@ module.exports = {
         return new HDWalletProvider(mnemonic, url)
       },
       network_id: '4',
-      skipDryRun: true
+      skipDryRun: true,
+      networkCheckTimeout: 999999
     },
   },
   compilers: {
     solc: {
-      version: "0.6.6",
+      version: "0.6.12",
       optimizer: {
         enabled: true,
         runs: 1
