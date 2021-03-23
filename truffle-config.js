@@ -19,30 +19,25 @@ module.exports = {
       port: 7545,
       network_id: '*',
     },
-    kovan: {
-      provider: () => {
-        return new HDWalletProvider(mnemonic, providerOrUrl, 2)
-      },
-      network_id: '42',
-      skipDryRun: true
-    },
+    // kovan: {
+    //   provider: () => {
+    //     return new HDWalletProvider(mnemonic, providerOrUrl, 2)
+    //   },
+    //   network_id: '42',
+    //   skipDryRun: true
+    // },
     rinkeby: {
-      provider: () => 
-        new HDWalletProvider({
-          mnemonic: {
-            phrase: mnemonicPhrase
-          },
-          providerOrUrl: Url,  
-          // numberOfAddresses: 3,
-          addressIndex: 2,   
-          // skipDryRun: true,
-          shareNonce: true,
-          pollingInterval: 8000
-          }),
-        network_id: '4',
-        // networkCheckTimeout: 999999,
+      provider: function() {
+        return new HDWalletProvider(mnemonic, Url, 2)
+      },
+    network_id: "4",
+    networkCheckTimeout: 1000000,
+    timeoutBlocks: 200,
+    skipDryRun: false
+    // addressIndex: 2
+    
 
-      }
+  }
   },
   compilers: {
     solc: {
