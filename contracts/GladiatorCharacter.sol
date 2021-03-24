@@ -26,6 +26,11 @@ contract GladiatorCharacter is ERC721, VRFConsumerBase {
 
     Character[] public characters;
     // mappings will go here 
+    mapping(bytes32 => string) requestToCharacterName;
+    mapping(bytes32 => address) requestToSender;
+    mapping(bytes32 => uint256) requestToTokenId;
+
+
 
     constructor(address _VRFCoordinator, address _LinkToken, bytes32 _keyHash) public
     VRFConsumerBase(_VRFCoordinator, _LinkToken) 
@@ -33,6 +38,23 @@ contract GladiatorCharacter is ERC721, VRFConsumerBase {
         vrfCoordiantor = _VRFCoordinator;
         keyHash = _keyhash;
         fee = 0.1 * 10**18; // 0.1 LINK     
+    }
+
+    function requestNewRandomCharacter (uint256 userProvidedSeed, string memory name) public returns (bytes32) {
+        bytes32 requestId = requestRandomness(keyHash, fee, userProvidedSeed);
+        requestToCharacterName[requestId] = name;
+        requestToSender[requestId] = msg.sender;
+        return requestId;
+    }
+
+    function fulfillRandomness(bytes32 requestId, uint256 randomNumber)
+    internal override {
+        //define the NFT
+        uint256 newId = characters.length;
+        uint256 strength = (randomNumber % 100);
+        uint256 dexterity = ((randomNumber % 1000) / 100);
+        uint256 stamina = ((randomNumber % 1000000) / 10000);
+
     }
 
 }
