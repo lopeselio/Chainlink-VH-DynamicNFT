@@ -12,8 +12,8 @@ import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
 
 contract GladiatorCharacter is ERC721, VRFConsumerBase {
     bytes32 public keyHash;
-    uint256 vrfCoordinator;
-    bytes32 internal keyHash;
+    address vrfCoordinator;
+    // bytes32 internal keyHash;
     uint internal fee;
     uint public randomResult;
 
@@ -34,9 +34,9 @@ contract GladiatorCharacter is ERC721, VRFConsumerBase {
 
     constructor(address _VRFCoordinator, address _LinkToken, bytes32 _keyHash) public
     VRFConsumerBase(_VRFCoordinator, _LinkToken) 
-    ERC721("GladiatorCharacter", "GDCT") public {
-        vrfCoordiantor = _VRFCoordinator;
-        keyHash = _keyhash;
+    ERC721("GladiatorCharacter", "GDCT") {
+        vrfCoordinator = _VRFCoordinator;
+        keyHash = _keyHash;
         fee = 0.1 * 10**18; // 0.1 LINK     
     }
 
@@ -52,8 +52,27 @@ contract GladiatorCharacter is ERC721, VRFConsumerBase {
         //define the NFT
         uint256 newId = characters.length;
         uint256 strength = (randomNumber % 100);
-        uint256 dexterity = ((randomNumber % 1000) / 100);
+        uint256 speed = ((randomNumber % 1000) / 100);
         uint256 stamina = ((randomNumber % 1000000) / 10000);
+
+        characters.push(
+            Character(
+                strength,
+                speed,
+                stamina,
+                requestToCharacterName[requestId]
+            )
+        );
+        _safeMint(requestToSender[requestId], newId);
+
+    }
+
+    function setTokenURI(uint256 tokenId, string memory _tokenURI) public {
+        require(
+            _isApprovedOrOwner(_msgSender(), tokenId),
+            "ERC721: transfer caller is not owner nor approved"
+        );
+        _setTokenURI(tokenId, _tokenURI);
 
     }
 
