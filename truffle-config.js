@@ -4,7 +4,7 @@ const Web3 = require("web3");
 // require('babel-polyfill');
 // require('babel-register');
 
-const mnemonicPhrase = process.env.MNEMONIC
+const mnemonic = process.env.MNEMONIC
 const Url = process.env.RPC_URL
 
 module.exports = {
@@ -19,13 +19,7 @@ module.exports = {
       port: 7545,
       network_id: '*',
     },
-    // kovan: {
-    //   provider: () => {
-    //     return new HDWalletProvider(mnemonic, providerOrUrl, 2)
-    //   },
-    //   network_id: '42',
-    //   skipDryRun: true
-    // },
+
     rinkeby: {
       provider: function() {
         return new HDWalletProvider(mnemonic, Url, 2)
