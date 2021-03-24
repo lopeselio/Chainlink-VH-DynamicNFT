@@ -12,10 +12,11 @@ import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
 
 contract GladiatorCharacter is ERC721, VRFConsumerBase {
     bytes32 public keyHash;
-    address vrfCoordinator;
+    address VRFCoordinator;
     // bytes32 internal keyHash;
-    uint internal fee;
-    uint public randomResult;
+    uint256 internal fee;
+    uint256 public randomResult;
+    address public Linktoken;
 
     struct Character {
         uint256 strength;
@@ -35,8 +36,9 @@ contract GladiatorCharacter is ERC721, VRFConsumerBase {
     constructor(address _VRFCoordinator, address _LinkToken, bytes32 _keyHash) public
     VRFConsumerBase(_VRFCoordinator, _LinkToken) 
     ERC721("GladiatorCharacter", "GDCT") {
-        vrfCoordinator = _VRFCoordinator;
+        VRFCoordinator = _VRFCoordinator;
         keyHash = _keyHash;
+        Linktoken = _LinkToken;
         fee = 0.1 * 10**18; // 0.1 LINK     
     }
 
